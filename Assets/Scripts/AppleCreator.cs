@@ -6,7 +6,7 @@ public class AppleCreator : MonoBehaviour
 {
     public GameObject ApplePrefab,KnifePrefab;
     private int RandomApples;
-    private int Rotation;
+    private int Rotation,KnifeRotation;
     GameObject Apple,Knife;
     public ScriptableApple SApple;
 
@@ -15,14 +15,15 @@ public class AppleCreator : MonoBehaviour
         Knife = Instantiate(KnifePrefab, transform);
         Knife.transform.position = new Vector3(0, -0.5f, 0);
         Knife.GetComponent<Knife>().IsInWood = true;
-        Knife.transform.RotateAround(this.transform.position, new Vector3(0, 0, 1), Rotation + 30);
+        Knife.transform.RotateAround(this.transform.position, new Vector3(0, 0, 1), KnifeRotation + 30);
+        KnifeRotation = KnifeRotation + 40;
     }
     void Start()
     {
         Rotation = 0;
+        KnifeRotation = 0;
         int CazinoApple = Random.Range(1, 100);
         int CazinoKnife = Random.Range(1,3);
-        KnifeCreate();
         if (CazinoApple > 0 && CazinoApple < SApple.AppearChance+1)
         {
             RandomApples = Random.Range(1, 4);
@@ -32,7 +33,10 @@ public class AppleCreator : MonoBehaviour
                     for (int i = 0; i < 1; i++)
                     {
                         Apple = Instantiate(ApplePrefab, transform);
-                        KnifeCreate();
+                        for (int j = 0; j < CazinoKnife; j++)
+                        {
+                            KnifeCreate();
+                        }
                     }
                     break;
                 case 2:
@@ -72,6 +76,13 @@ public class AppleCreator : MonoBehaviour
                         KnifeCreate();
                     }
                     break;
+            }
+        }
+        else
+        {
+            for (int j = 0; j < CazinoKnife; j++)
+            {
+                KnifeCreate();
             }
         }
     }
